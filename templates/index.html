@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analizador de Chats WhatsApp</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue:wght@400&family=Roboto:wght@300;400;700;900&display=swap');
+
+      :root {
+        --fighting-red: #d32f2f;
+        --fighting-orange: #ff6b35;
+        --fighting-gold: #ffd700;
+        --fighting-dark: #1a1a1a;
+        --fighting-gray: #2d2d2d;
+        --fighting-light-gray: #404040;
+        --fighting-turquoise: #20b2aa;
+        --fighting-white: #ffffff;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: linear-gradient(
+          135deg,
+          var(--fighting-dark) 0%,
+          var(--fighting-gray) 50%,
+          var(--fighting-light-gray) 100%
+        );
+        font-family: 'Roboto', sans-serif;
+        min-height: 100vh;
+        color: var(--fighting-white);
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+            circle at 20% 80%,
+            rgba(255, 107, 53, 0.1) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 20%,
+            rgba(255, 215, 0, 0.1) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 40% 40%,
+            rgba(211, 47, 47, 0.1) 0%,
+            transparent 50%
+          );
+        z-index: -1;
+      }
+
+      .fighting-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+      }
+
+      .main-card {
+        background: rgba(45, 45, 45, 0.95);
+        backdrop-filter: blur(10px);
+        border: 2px solid var(--fighting-red);
+        border-radius: 20px;
+        box-shadow: 0 0 30px rgba(211, 47, 47, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        max-width: 600px;
+        width: 100%;
+        padding: 3rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .main-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 215, 0, 0.1),
+          transparent
+        );
+        animation: shine 3s infinite;
+      }
+
+      @keyframes shine {
+        0% {
+          left: -100%;
+        }
+        100% {
+          left: 100%;
+        }
+      }
+
+      .fighting-title {
+        font-family: 'Bebas Neue', cursive;
+        font-size: 2.5rem;
+        background: linear-gradient(
+          45deg,
+          var(--fighting-red),
+          var(--fighting-orange),
+          var(--fighting-gold)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-align: center;
+        margin-bottom: 0.5rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        letter-spacing: 2px;
+      }
+
+      .fighting-subtitle {
+        text-align: center;
+        color: var(--fighting-turquoise);
+        font-weight: 300;
+        margin-bottom: 2rem;
+        font-size: 1.1rem;
+      }
+
+      .fighting-logo {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(
+          135deg,
+          var(--fighting-red),
+          var(--fighting-orange)
+        );
+        border-radius: 50%;
+        margin: 0 auto 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        box-shadow: 0 0 20px rgba(211, 47, 47, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .upload-zone {
+        border: 3px dashed var(--fighting-turquoise);
+        border-radius: 15px;
+        padding: 2.5rem;
+        text-align: center;
+        background: rgba(32, 178, 170, 0.1);
+        transition: all 0.3s ease;
+        position: relative;
+        margin: 2rem 0;
+      }
+
+      .upload-zone:hover {
+        border-color: var(--fighting-gold);
+        background: rgba(255, 215, 0, 0.1);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(32, 178, 170, 0.2);
+      }
+
+      .upload-icon {
+        font-size: 4rem;
+        color: var(--fighting-turquoise);
+        margin-bottom: 1rem;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .file-input {
+        display: none;
+      }
+
+      .fighting-btn {
+        display: inline-block;
+        padding: 15px 35px;
+        background: linear-gradient(
+          135deg,
+          var(--fighting-red),
+          var(--fighting-orange)
+        );
+        color: var(--fighting-white);
+        border: none;
+        border-radius: 30px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 4px 15px rgba(211, 47, 47, 0.4);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .fighting-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: left 0.5s;
+      }
+
+      .fighting-btn:hover::before {
+        left: 100%;
+      }
+
+      .fighting-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(211, 47, 47, 0.6);
+      }
+
+      .analyze-btn {
+        background: linear-gradient(
+          135deg,
+          var(--fighting-turquoise),
+          var(--fighting-gold)
+        );
+        margin-top: 1.5rem;
+      }
+
+      .analyze-btn:hover {
+        box-shadow: 0 8px 25px rgba(32, 178, 170, 0.6);
+      }
+
+      .instructions-card {
+        background: rgba(64, 64, 64, 0.8);
+        border: 1px solid var(--fighting-light-gray);
+        border-radius: 15px;
+        padding: 2rem;
+        margin-top: 2rem;
+        border-left: 5px solid var(--fighting-gold);
+      }
+
+      .instructions-title {
+        color: var(--fighting-gold);
+        font-family: 'Bebas Neue', cursive;
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+        letter-spacing: 1px;
+      }
+
+      .instructions-list {
+        color: #cccccc;
+        padding-left: 1.5rem;
+      }
+
+      .instructions-list li {
+        margin-bottom: 0.8rem;
+        line-height: 1.6;
+      }
+
+      .alert-danger {
+        background: rgba(211, 47, 47, 0.2);
+        border: 1px solid var(--fighting-red);
+        color: var(--fighting-white);
+        border-radius: 10px;
+      }
+
+      .filename-display {
+        margin-top: 1rem;
+        padding: 1rem;
+        background: rgba(32, 178, 170, 0.2);
+        border: 1px solid var(--fighting-turquoise);
+        border-radius: 8px;
+        color: var(--fighting-turquoise);
+        font-family: 'Roboto Mono', monospace;
+        font-weight: 500;
+      }
+
+      .fighting-spirit-text {
+        text-align: center;
+        margin-top: 2rem;
+        font-style: italic;
+        color: var(--fighting-gold);
+        font-weight: 300;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="fighting-container">
+      <div class="main-card">
+        <div class="fighting-logo">🥊</div>
+        <h1 class="fighting-title">FIGHTING SPIRIT</h1>
+        <h2 class="fighting-title" style="font-size: 1.8rem; margin-top: -1rem">
+          Chat Analyzer
+        </h2>
+        <p class="fighting-subtitle">
+          Analiza tu chat con el poder del espíritu de lucha
+        </p>
+
+        {% with messages = get_flashed_messages() %} {% if messages %} {% for
+        message in messages %}
+        <div class="alert alert-danger">
+          <i class="fas fa-exclamation-triangle"></i> {{ message }}
+        </div>
+        {% endfor %} {% endif %} {% endwith %}
+
+        <form action="/upload" method="post" enctype="multipart/form-data">
+          <div class="upload-zone">
+            <div class="upload-icon">
+              <i class="fas fa-file-upload"></i>
+            </div>
+            <label for="file" class="fighting-btn">
+              <i class="fas fa-folder-open"></i> Seleccionar Chat .txt
+            </label>
+            <input
+              type="file"
+              id="file"
+              name="file"
+              accept=".txt"
+              class="file-input"
+              onchange="showFilename(this)"
+            />
+            <div
+              id="filename"
+              class="filename-display"
+              style="display: none"
+            ></div>
+          </div>
+          <div class="text-center">
+            <button type="submit" class="fighting-btn analyze-btn">
+              <i class="fas fa-chart-line"></i> ¡ANALIZAR CON GUTS!
+            </button>
+          </div>
+        </form>
+
+        <div class="instructions-card">
+          <h3 class="instructions-title">
+            <i class="fas fa-fist-raised"></i> INSTRUCCIONES DE COMBATE
+          </h3>
+          <ol class="instructions-list">
+            <li>
+              <i class="fab fa-whatsapp text-success"></i> Abre WhatsApp en tu
+              dispositivo
+            </li>
+            <li>
+              <i class="fas fa-users"></i> Selecciona el chat grupal a analizar
+            </li>
+            <li>
+              <i class="fas fa-ellipsis-v"></i> Toca los 3 puntos → "Más" →
+              "Exportar chat"
+            </li>
+            <li><i class="fas fa-ban"></i> Selecciona "Sin multimedia"</li>
+            <li><i class="fas fa-upload"></i> Sube el archivo .txt aquí</li>
+          </ol>
+        </div>
+
+        <p class="fighting-spirit-text">
+          "El esfuerzo nunca traiciona" - Hajime no Ippo
+        </p>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      function showFilename(input) {
+        const filenameDiv = document.getElementById('filename');
+        if (input.files && input.files[0]) {
+          filenameDiv.innerHTML =
+            '<i class="fas fa-file-alt"></i> ' + input.files[0].name;
+          filenameDiv.style.display = 'block';
+        } else {
+          filenameDiv.style.display = 'none';
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analicis - {{ filename }}</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue:wght@400&family=Roboto:wght@300;400;700;900&display=swap');
+
+      :root {
+        --fighting-red: #d32f2f;
+        --fighting-orange: #ff6b35;
+        --fighting-gold: #ffd700;
+        --fighting-dark: #1a1a1a;
+        --fighting-gray: #2d2d2d;
+        --fighting-light-gray: #404040;
+        --fighting-turquoise: #20b2aa;
+        --fighting-white: #ffffff;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: var(--fighting-dark);
+        font-family: 'Roboto', sans-serif;
+        color: var(--fighting-white);
+        line-height: 1.6;
+      }
+
+      .fighting-header {
+        background: linear-gradient(
+          135deg,
+          var(--fighting-dark) 0%,
+          var(--fighting-gray) 50%,
+          var(--fighting-red) 100%
+        );
+        padding: 3rem 0;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .fighting-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(
+            circle at 30% 50%,
+            rgba(255, 215, 0, 0.1) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 70% 50%,
+            rgba(211, 47, 47, 0.1) 0%,
+            transparent 50%
+          );
+      }
+
+      .fighting-header h1 {
+        font-family: 'Bebas Neue', cursive;
+        font-size: 3.5rem;
+        background: linear-gradient(
+          45deg,
+          var(--fighting-red),
+          var(--fighting-orange),
+          var(--fighting-gold)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: 3px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .fighting-header p {
+        font-size: 1.3rem;
+        color: var(--fighting-turquoise);
+        margin-top: 0.5rem;
+        position: relative;
+        z-index: 2;
+      }
+
+      .main-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      .filename-banner {
+        background: rgba(45, 45, 45, 0.95);
+        border: 2px solid var(--fighting-turquoise);
+        border-radius: 15px;
+        padding: 1.5rem;
+        text-align: center;
+        margin-bottom: 3rem;
+        box-shadow: 0 0 20px rgba(32, 178, 170, 0.3);
+      }
+
+      .filename-banner i {
+        color: var(--fighting-gold);
+        margin-right: 0.5rem;
+      }
+
+      .stats-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        margin-bottom: 4rem;
+      }
+
+      .fighting-stat-card {
+        background: linear-gradient(
+          135deg,
+          var(--fighting-gray) 0%,
+          var(--fighting-light-gray) 100%
+        );
+        border: 2px solid var(--fighting-red);
+        border-radius: 20px;
+        padding: 2rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 25px rgba(211, 47, 47, 0.2);
+      }
+
+      .fighting-stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(
+          90deg,
+          var(--fighting-red),
+          var(--fighting-orange),
+          var(--fighting-gold),
+          var(--fighting-turquoise)
+        );
+      }
+
+      .fighting-stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(211, 47, 47, 0.4);
+      }
+
+      .stat-number {
+        font-family: 'Bebas Neue', cursive;
+        font-size: 3rem;
+        background: linear-gradient(
+          45deg,
+          var(--fighting-gold),
+          var(--fighting-orange)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+
+      .stat-label {
+        color: var(--fighting-turquoise);
+        font-weight: 500;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .chart-card {
+        background: rgba(45, 45, 45, 0.95);
+        border: 2px solid var(--fighting-orange);
+        border-radius: 20px;
+        padding: 2.5rem;
+        margin: 3rem 0;
+        box-shadow: 0 10px 30px rgba(255, 107, 53, 0.2);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .chart-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: linear-gradient(
+          90deg,
+          var(--fighting-red),
+          var(--fighting-orange),
+          var(--fighting-gold)
+        );
+      }
+
+      .chart-title {
+        font-family: 'Bebas Neue', cursive;
+        font-size: 2rem;
+        color: var(--fighting-white);
+        text-align: center;
+        margin-bottom: 2rem;
+        letter-spacing: 2px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      }
+
+      .chart-title i {
+        color: var(--fighting-gold);
+        margin-right: 0.5rem;
+      }
+
+      .chart-img {
+        width: 100%;
+        height: auto;
+        border-radius: 15px;
+        border: 1px solid var(--fighting-light-gray);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      .fighting-btn {
+        display: inline-block;
+        background: linear-gradient(
+          135deg,
+          var(--fighting-red),
+          var(--fighting-orange)
+        );
+        color: var(--fighting-white);
+        padding: 15px 40px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 1.2rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        transition: all 0.3s ease;
+        box-shadow: 0 6px 20px rgba(211, 47, 47, 0.4);
+        border: 2px solid transparent;
+      }
+
+      .fighting-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(211, 47, 47, 0.6);
+        border-color: var(--fighting-gold);
+        color: var(--fighting-white);
+        text-decoration: none;
+      }
+
+      .summary-banner {
+        background: rgba(45, 45, 45, 0.95);
+        border: 2px solid var(--fighting-turquoise);
+        border-radius: 15px;
+        padding: 2rem;
+        margin: 3rem 0;
+        text-align: center;
+        box-shadow: 0 0 25px rgba(32, 178, 170, 0.3);
+      }
+
+      .summary-banner h3 {
+        font-family: 'Bebas Neue', cursive;
+        color: var(--fighting-gold);
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        letter-spacing: 2px;
+      }
+
+      .summary-item {
+        display: inline-block;
+        margin: 0.5rem 1rem;
+        padding: 0.5rem 1rem;
+        background: rgba(32, 178, 170, 0.2);
+        border: 1px solid var(--fighting-turquoise);
+        border-radius: 25px;
+        color: var(--fighting-white);
+      }
+
+      .summary-item strong {
+        color: var(--fighting-gold);
+      }
+
+      .fighting-quote {
+        text-align: center;
+        font-style: italic;
+        color: var(--fighting-gold);
+        font-size: 1.2rem;
+        margin: 3rem 0;
+        padding: 2rem;
+        background: rgba(45, 45, 45, 0.8);
+        border-left: 5px solid var(--fighting-gold);
+        border-radius: 10px;
+      }
+
+      @media (max-width: 768px) {
+        .main-container {
+          padding: 1rem;
+        }
+
+        .stats-container {
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 1.5rem;
+        }
+
+        .chart-card {
+          padding: 1.5rem;
+        }
+
+        .fighting-header h1 {
+          font-size: 2.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="fighting-header">
+      <h1><i class="fas fa-fist-raised"></i> ANÁLISIS COMPLETO</h1>
+      <p>Resultados del espíritu de lucha de tu chat</p>
+    </div>
+
+    <div class="main-container">
+      <div class="filename-banner">
+        <i class="fas fa-file-alt"></i>
+        <strong>Archivo Analizado:</strong> {{ filename }}
+      </div>
+
+      <!-- Estadísticas Principales -->
+      <div class="stats-container">
+        <div class="fighting-stat-card">
+          <span class="stat-number">{{ estadisticas.total_mensajes }}</span>
+          <div class="stat-label">
+            <i class="fas fa-comments"></i> Total Mensajes
+          </div>
+        </div>
+        <div class="fighting-stat-card">
+          <span class="stat-number">{{ estadisticas.total_usuarios }}</span>
+          <div class="stat-label">
+            <i class="fas fa-users"></i> Luchadores Activos
+          </div>
+        </div>
+        <div class="fighting-stat-card">
+          <span class="stat-number"
+            >{{ estadisticas.mensajes_usuario_activo }}</span
+          >
+          <div class="stat-label">
+            <i class="fas fa-crown"></i> Campeón del Chat
+          </div>
+        </div>
+        <div class="fighting-stat-card">
+          <span class="stat-number">{{ estadisticas.total_emojis }}</span>
+          <div class="stat-label">
+            <i class="fas fa-smile"></i> Emojis de Combate
+          </div>
+        </div>
+        <div class="fighting-stat-card">
+          <span class="stat-number">{{ estadisticas.promedio_palabras }}</span>
+          <div class="stat-label">
+            <i class="fas fa-quote-right"></i> Promedio Palabras
+          </div>
+        </div>
+        <div class="fighting-stat-card">
+          <span class="stat-number">{{ estadisticas.hora_activa }}:00</span>
+          <div class="stat-label">
+            <i class="fas fa-clock"></i> Hora de Entrenamiento
+          </div>
+        </div>
+      </div>
+
+      <!-- Gráficos de Análisis -->
+      {% if graficos.usuarios %}
+      <div class="chart-card">
+        <h2 class="chart-title">
+          <i class="fas fa-trophy"></i> Ranking de Luchadores
+        </h2>
+        <img
+          src="data:image/png;base64,{{ graficos.usuarios }}"
+          alt="Top usuarios"
+          class="chart-img"
+        />
+      </div>
+      {% endif %} {% if graficos.timeline %}
+      <div class="chart-card">
+        <h2 class="chart-title">
+          <i class="fas fa-chart-line"></i> Evolución del Entrenamiento
+        </h2>
+        <img
+          src="data:image/png;base64,{{ graficos.timeline }}"
+          alt="Línea temporal"
+          class="chart-img"
+        />
+      </div>
+      {% endif %} {% if graficos.dias %}
+      <div class="chart-card">
+        <h2 class="chart-title">
+          <i class="fas fa-calendar-week"></i> Días de Entrenamiento
+        </h2>
+        <img
+          src="data:image/png;base64,{{ graficos.dias }}"
+          alt="Actividad por días"
+          class="chart-img"
+        />
+      </div>
+      {% endif %} {% if graficos.horas %}
+      <div class="chart-card">
+        <h2 class="chart-title">
+          <i class="fas fa-clock"></i> Horarios de Combate
+        </h2>
+        <img
+          src="data:image/png;base64,{{ graficos.horas }}"
+          alt="Actividad por horas"
+          class="chart-img"
+        />
+      </div>
+      {% endif %} {% if graficos.palabras %}
+      <div class="chart-card">
+        <h2 class="chart-title">
+          <i class="fas fa-comment-dots"></i> Técnicas Más Usadas
+        </h2>
+        <img
+          src="data:image/png;base64,{{ graficos.palabras }}"
+          alt="Palabras frecuentes"
+          class="chart-img"
+        />
+      </div>
+      {% endif %} {% if graficos.wordcloud %}
+      <div class="chart-card">
+        <h2 class="chart-title">
+          <i class="fas fa-cloud"></i> Espíritu del Grupo
+        </h2>
+        <img
+          src="data:image/png;base64,{{ graficos.wordcloud }}"
+          alt="Nube de palabras"
+          class="chart-img"
+        />
+      </div>
+      {% endif %} {% if graficos.emojis %}
+      <div class="chart-card">
+        <h2 class="chart-title">
+          <i class="fas fa-laugh"></i> Expresiones de Victoria
+        </h2>
+        <img
+          src="data:image/png;base64,{{ graficos.emojis }}"
+          alt="Emojis populares"
+          class="chart-img"
+        />
+      </div>
+      {% endif %}
+
+      <div class="text-center" style="margin: 4rem 0">
+        <a href="/" class="fighting-btn">
+          <i class="fas fa-redo-alt"></i> Nueva Batalla de Análisis
+        </a>
+      </div>
+
+      <div class="summary-banner">
+        <h3><i class="fas fa-medal"></i> Resumen de la Batalla</h3>
+        <div class="row">
+          <div class="col-md-4 mb-2">
+            <div class="summary-item">
+              <i class="fas fa-calendar"></i>
+              <strong>Período:</strong> {{ estadisticas.periodo }}
+            </div>
+          </div>
+          <div class="col-md-4 mb-2">
+            <div class="summary-item">
+              <i class="fas fa-crown"></i>
+              <strong>Campeón:</strong> {{ estadisticas.usuario_activo }}
+            </div>
+          </div>
+          <div class="col-md-4 mb-2">
+            <div class="summary-item">
+              <i class="fas fa-fire"></i>
+              <strong>Día Épico:</strong> {{ estadisticas.dia_activo }} ({{
+              estadisticas.mensajes_dia_activo }} rounds)
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fighting-quote">
+        <i class="fas fa-quote-left"></i>
+        "Un golpe puede decidir una pelea, pero el espíritu decide al luchador"
+        <br /><small>- Inspirado en Hajime no Ippo</small>
+        <i class="fas fa-quote-right"></i>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
