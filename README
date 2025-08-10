@@ -1,11 +1,18 @@
 #INSTALACIÓN Y CONFIGURACIÓN
 1 Preparación del Entorno
 #Verificar si se tinien instalado en visual python
+python --version
+
+#En tu carpeta examen practico\examen ejecuta:
+Copiar código
 python -m venv venv
 
 
+#Activar el entorno virtual
+
 #Por el terminal de visual instalar las dependencias 
 venv\Scripts\activate
+#luego la libreria:
 pip install flask pandas matplotlib seaborn wordcloud emoji
 
 
